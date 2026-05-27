@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: launchpad-market
+    env: docker
+    dockerfilePath: ./Dockerfile
+    region: ohio
+    plan: free
+    envVars:
+      - key: APP_NAME
+        value: "LaunchpadMarket"
+      - key: APP_ENV
+        value: "production"
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_URL
+        value: "https://launchpad-market.onrender.com" # This will be updated by Render automatically if you use the native RENDER_EXTERNAL_URL in your app, but we can hardcode for now.
+      - key: DB_CONNECTION
+        value: "sqlite"
+      - key: LOG_CHANNEL
+        value: "stderr"
+      - key: SESSION_DRIVER
+        value: "cookie"
+      - key: CACHE_STORE
+        value: "file"
+      - key: QUEUE_CONNECTION
+        value: "sync"
+    disk:
+      name: sqlite-data
+      mountPath: /app/database
+      sizeGB: 1
