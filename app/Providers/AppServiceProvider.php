@@ -16,9 +16,10 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        if (config('app.url')) {
-            \Illuminate\Support\Facades\URL::forceRootUrl(config('app.url'));
-        }
+        // Let Laravel automatically resolve the root URL from the Request host
+        // if (config('app.url')) {
+        //     \Illuminate\Support\Facades\URL::forceRootUrl(config('app.url'));
+        // }
 
         if (env('APP_ENV') !== 'local') {
             \Illuminate\Support\Facades\URL::forceScheme('https');
