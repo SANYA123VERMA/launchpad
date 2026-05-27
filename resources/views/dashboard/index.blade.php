@@ -15,6 +15,7 @@
         </div>
         <div style="display:flex;gap:10px">
             <a href="{{ route('favorites.index') }}" class="btn btn-outline-dark">❤️ Favorites</a>
+            <a href="{{ route('dashboard.analytics') }}" class="btn btn-outline-dark">📊 Analytics</a>
             <a href="{{ route('startups.create') }}" class="btn btn-green">+ New Listing</a>
         </div>
     </div>

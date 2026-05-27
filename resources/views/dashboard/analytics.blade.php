@@ -72,7 +72,15 @@
             <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px;box-shadow:var(--sh1);display:flex;flex-direction:column">
                 <h3 style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;margin-bottom:20px;color:#111">Inquiry Distribution</h3>
                 <div style="position:relative;height:250px;margin:auto;width:100%">
-                    <canvas id="inquiryShareChart"></canvas>
+                    @if($startups->sum('inquiries_count') > 0)
+                        <canvas id="inquiryShareChart"></canvas>
+                    @else
+                        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--ink3);text-align:center;padding:20px;background:var(--off);border-radius:12px;border:1px dashed var(--line2)">
+                            <div style="font-size:32px;margin-bottom:8px">📩</div>
+                            <div style="font-size:14px;font-weight:600;color:var(--ink)">No Inquiries Received Yet</div>
+                            <p style="font-size:11px;color:var(--ink3);margin-top:4px;max-width:220px">When investors reach out, their interest share will display here.</p>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -144,7 +152,15 @@
             <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px;box-shadow:var(--sh1);display:flex;flex-direction:column">
                 <h3 style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;margin-bottom:20px;color:#111">Interests by Category</h3>
                 <div style="position:relative;height:300px;margin:auto;width:100%">
-                    <canvas id="categoryChart"></canvas>
+                    @if(!$favoritesByCategory->isEmpty())
+                        <canvas id="categoryChart"></canvas>
+                    @else
+                        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--ink3);text-align:center;padding:20px;background:var(--off);border-radius:12px;border:1px dashed var(--line2)">
+                            <div style="font-size:32px;margin-bottom:8px">❤️</div>
+                            <div style="font-size:14px;font-weight:600;color:var(--ink)">No Favorites Added Yet</div>
+                            <p style="font-size:11px;color:var(--ink3);margin-top:4px;max-width:220px">Favorite startups to see your interest breakdown by category.</p>
+                        </div>
+                    @endif
                 </div>
             </div>
 
@@ -152,7 +168,15 @@
             <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px;box-shadow:var(--sh1);display:flex;flex-direction:column">
                 <h3 style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;margin-bottom:20px;color:#111">Outreach Types</h3>
                 <div style="position:relative;height:300px;margin:auto;width:100%">
-                    <canvas id="inquiryTypeChart"></canvas>
+                    @if(!$inquiriesByType->isEmpty())
+                        <canvas id="inquiryTypeChart"></canvas>
+                    @else
+                        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--ink3);text-align:center;padding:20px;background:var(--off);border-radius:12px;border:1px dashed var(--line2)">
+                            <div style="font-size:32px;margin-bottom:8px">📩</div>
+                            <div style="font-size:14px;font-weight:600;color:var(--ink)">No Inquiries Sent Yet</div>
+                            <p style="font-size:11px;color:var(--ink3);margin-top:4px;max-width:220px">Inquiries sent to founders will show up here.</p>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -244,6 +268,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
 
+        @if($startups->sum('inquiries_count') > 0)
         // Founder Inquiry Share Doughnut
         new Chart(document.getElementById('inquiryShareChart'), {
             type: 'doughnut',
@@ -277,6 +302,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             }
         });
+        @endif
 
         // Founder Financials Compare Chart (Horizontal Bar Chart)
         const startupArr = {!! json_encode($startups->pluck('arr')) !!};
@@ -330,6 +356,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 
     } else {
+        @if(!$favoritesByCategory->isEmpty())
         // Investor Interests by Category Chart
         const categories = {!! json_encode($favoritesByCategory->pluck('name')) !!};
         const categoryCounts = {!! json_encode($favoritesByCategory->pluck('count')) !!};
@@ -362,7 +389,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             }
         });
+        @endif
 
+        @if(!$inquiriesByType->isEmpty())
         // Investor Inquiries by Type Chart
         const inquiryTypes = {!! json_encode($inquiriesByType->pluck('interest_type')) !!}.map(t => {
             if (!t) return 'Unknown';
@@ -398,6 +427,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             }
         });
+        @endif
     }
 });
 </script>

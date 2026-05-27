@@ -58,13 +58,29 @@
         <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px;box-shadow:var(--sh1)">
             <h3 style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;margin-bottom:20px">Investment Volume by Startup (Top 5 Approved)</h3>
             <div style="position:relative;height:280px;width:100%">
-                <canvas id="investmentVolumeChart"></canvas>
+                @if(count($chartStartupsLabels) > 0)
+                    <canvas id="investmentVolumeChart"></canvas>
+                @else
+                    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--ink3);text-align:center;padding:20px;background:var(--off);border-radius:12px;border:1px dashed var(--line2)">
+                        <div style="font-size:32px;margin-bottom:8px">💰</div>
+                        <div style="font-size:14px;font-weight:600;color:var(--ink)">No Approved Investments Yet</div>
+                        <p style="font-size:12px;color:var(--ink3);margin-top:4px;max-width:280px">Approved pledges with successful payments will show up here.</p>
+                    </div>
+                @endif
             </div>
         </div>
         <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px;box-shadow:var(--sh1)">
             <h3 style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;margin-bottom:20px">Startup Categories Breakdown</h3>
-            <div style="position:relative;height:280px;width:100%;display:flex;justify-content:center">
-                <canvas id="categoryBreakdownChart"></canvas>
+            <div style="position:relative;height:280px;width:100%">
+                @if(count($chartCategoryLabels) > 0)
+                    <canvas id="categoryBreakdownChart"></canvas>
+                @else
+                    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--ink3);text-align:center;padding:20px;background:var(--off);border-radius:12px;border:1px dashed var(--line2)">
+                        <div style="font-size:32px;margin-bottom:8px">🏷️</div>
+                        <div style="font-size:14px;font-weight:600;color:var(--ink)">No Startups Registered Yet</div>
+                        <p style="font-size:12px;color:var(--ink3);margin-top:4px;max-width:280px">Registered listings categorized by industry will populate this breakdown.</p>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
@@ -133,6 +149,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+    @if(count($chartStartupsLabels) > 0)
     // 1. Investment volume chart (Bar Chart)
     const investmentCtx = document.getElementById('investmentVolumeChart').getContext('2d');
     new Chart(investmentCtx, {
@@ -164,7 +181,9 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
     });
+    @endif
 
+    @if(count($chartCategoryLabels) > 0)
     // 2. Categories breakdown chart (Doughnut Chart)
     const categoryCtx = document.getElementById('categoryBreakdownChart').getContext('2d');
     new Chart(categoryCtx, {
@@ -195,6 +214,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
     });
+    @endif
 });
 </script>
 @endsection
