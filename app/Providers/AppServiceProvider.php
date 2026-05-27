@@ -20,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
             \Illuminate\Support\Facades\URL::forceRootUrl(config('app.url'));
         }
 
+        if (env('APP_ENV') !== 'local') {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
+
         \Illuminate\Pagination\Paginator::defaultView('partials.pagination');
 
         view()->composer('partials.navbar', function ($view) {
