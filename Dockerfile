@@ -21,6 +21,8 @@ RUN composer install --no-dev --optimize-autoloader
 RUN npm install && npm run build
 
 RUN cp .env.example .env && \
+    sed -i 's/APP_ENV=local/APP_ENV=production/g' .env && \
+    sed -i 's/APP_DEBUG=true/APP_DEBUG=false/g' .env && \
     touch database/database.sqlite && \
     php artisan key:generate
 
